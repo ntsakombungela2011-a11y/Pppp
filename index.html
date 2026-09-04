@@ -115,6 +115,7 @@
                 main.style.height = (BASE_H * ratio) + 'px';
                 main.style.overflow = 'hidden';
                 main.style.position = 'relative';
+                window.stageScale = ratio;
             } else {
                 wrap.style.transform = 'none';
                 wrap.style.position = 'relative';
@@ -122,11 +123,14 @@
                 main.style.width = '100%';
                 main.style.height = BASE_H + 'px';
                 main.style.overflow = 'visible';
+                window.stageScale = 1;
             }
         }
         fitStage();
+        window.addEventListener('load', fitStage);
         window.addEventListener('resize', fitStage);
         window.addEventListener('orientationchange', fitStage);
+        setTimeout(fitStage, 300);
     })();
 </script>
 
@@ -321,9 +325,9 @@
         var hold = 1;
 
         canvas.click(function (e) {
-            var offset = canvas.offset(), x, y;
-            x = e.pageX - offset.left;
-            y = e.pageY - offset.top;
+            var offset = canvas.offset(), x, y, scale = window.stageScale || 1;
+            x = (e.pageX - offset.left) / scale;
+            y = (e.pageY - offset.top) / scale;
             if (seed.hover(x, y)) {
                 hold = 0;
                 canvas.unbind("click");
@@ -333,9 +337,9 @@
                 $("body").removeClass("pre-click");
             }
         }).mousemove(function (e) {
-            var offset = canvas.offset(), x, y;
-            x = e.pageX - offset.left;
-            y = e.pageY - offset.top;
+            var offset = canvas.offset(), x, y, scale = window.stageScale || 1;
+            x = (e.pageX - offset.left) / scale;
+            y = (e.pageY - offset.top) / scale;
             canvas.toggleClass('hand', seed.hover(x, y));
         });
 
