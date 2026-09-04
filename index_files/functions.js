@@ -33,7 +33,8 @@ var clientHeight = $win.height();
 })(jQuery);
 
 function timeElapse(date){
-	var seconds = (+ new Date() - date.getTime()) / 1000;
+	// Never render mixed negative units if the selected date is still in the future.
+	var seconds = Math.max(0, Math.floor((Date.now() - date.getTime()) / 1000));
 	var days = Math.floor(seconds / (3600 * 24));
 	seconds = seconds % (3600 * 24);
 	var hours = Math.floor(seconds / 3600);
@@ -45,8 +46,7 @@ function timeElapse(date){
 	if (minutes < 10) {
 		minutes = "0" + minutes;
 	}
-	seconds = Math.floor(seconds % 60);
-	seconds = (seconds + "").replace(/\.\d*/, "");
+	seconds = seconds % 60;
 	var result = "<span class=\"digit\">" + days + "</span> days <span class=\"digit\">" + hours + "</span> hrs <span class=\"digit\">" + minutes + "</span> min <span class=\"digit\">" + seconds + "</span> sec";
 	$("#clock").html(result);
 }
