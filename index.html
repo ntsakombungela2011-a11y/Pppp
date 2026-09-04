@@ -8,7 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Will You Be My Girlfriend?</title>
 
-    <link type="text/css" rel="stylesheet" href="./index_files/default.css?v=4">
+    <script>
+        // Runs immediately, before any CSS/layout paints, to force correct mobile scale from frame one.
+        (function () {
+            var BASE_W = 1100, BASE_H = 680;
+            var vw = window.innerWidth || document.documentElement.clientWidth || screen.width;
+            var css;
+            if (vw < BASE_W) {
+                var ratio = vw / BASE_W;
+                window.__stageScale = ratio;
+                css = '#wrap{width:' + BASE_W + 'px;height:' + BASE_H + 'px;' +
+                    'transform:scale(' + ratio + ');transform-origin:top left;' +
+                    'position:absolute;left:0;top:0;margin:0;}' +
+                    '#main{width:' + vw + 'px;height:' + (BASE_H * ratio) + 'px;' +
+                    'overflow:hidden;position:relative;}';
+            } else {
+                window.__stageScale = 1;
+                css = '';
+            }
+            document.write('<style id="early-scale">' + css + '</style>');
+        })();
+    </script>
+
+    <link type="text/css" rel="stylesheet" href="./index_files/default.css?v=5">
     <script type="text/javascript" src="./index_files/jquery.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex-parser.js"></script>
@@ -16,9 +38,9 @@
     <script type="text/javascript" src="./index_files/jscex-builderbase.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex-async.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex-async-powerpack.min.js"></script>
-    <script type="text/javascript" src="./index_files/functions.js?v=4" charset="utf-8"></script>
+    <script type="text/javascript" src="./index_files/functions.js?v=5" charset="utf-8"></script>
     <script type="text/javascript" src="./index_files/love.js" charset="utf-8"></script>
-    <script type="text/javascript" src="./config.js?v=4"></script>
+    <script type="text/javascript" src="./config.js?v=5"></script>
     <style type="text/css">
         <!--
         .STYLE1 {
@@ -106,6 +128,8 @@
             var vw = window.innerWidth;
             var main = document.getElementById('main');
             var wrap = document.getElementById('wrap');
+            var earlyStyle = document.getElementById('early-scale');
+            if (earlyStyle) { earlyStyle.remove(); }
             if (vw < BASE_W) {
                 var ratio = vw / BASE_W;
                 wrap.style.transform = 'scale(' + ratio + ')';
