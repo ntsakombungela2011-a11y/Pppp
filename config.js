@@ -10,7 +10,7 @@ var config = {
         "So here's my move Qxd8+, no hidden strategy behind it...",
     ],
     // Format: YYYY-MM-DDTHH:MM:SS
-    date: "2026-07-21T00:00:00",
+    date: "2026-07-21T00:16:00",
     // The two names
     names: ["Boipelo", "Ntsako"]
 }
