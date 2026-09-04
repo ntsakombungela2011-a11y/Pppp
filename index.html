@@ -8,29 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Will You Be My Girlfriend?</title>
 
-    <script>
-        // Runs immediately, before any CSS/layout paints, to force correct mobile scale from frame one.
-        (function () {
-            var BASE_W = 1100, BASE_H = 680;
-            var vw = window.innerWidth || document.documentElement.clientWidth || screen.width;
-            var css;
-            if (vw < BASE_W) {
-                var ratio = vw / BASE_W;
-                window.__stageScale = ratio;
-                css = '#wrap{width:' + BASE_W + 'px;height:' + BASE_H + 'px;' +
-                    'transform:scale(' + ratio + ');transform-origin:top left;' +
-                    'position:absolute;left:0;top:0;margin:0;}' +
-                    '#main{width:' + vw + 'px;height:' + (BASE_H * ratio) + 'px;' +
-                    'overflow:hidden;position:relative;}';
-            } else {
-                window.__stageScale = 1;
-                css = '';
-            }
-            document.write('<style id="early-scale">' + css + '</style>');
-        })();
-    </script>
-
-    <link type="text/css" rel="stylesheet" href="./index_files/default.css?v=5">
+    <link type="text/css" rel="stylesheet" href="./index_files/default.css?v=6">
     <script type="text/javascript" src="./index_files/jquery.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex-parser.js"></script>
@@ -38,7 +16,7 @@
     <script type="text/javascript" src="./index_files/jscex-builderbase.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex-async.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex-async-powerpack.min.js"></script>
-    <script type="text/javascript" src="./index_files/functions.js?v=5" charset="utf-8"></script>
+    <script type="text/javascript" src="./index_files/functions.js?v=6" charset="utf-8"></script>
     <script type="text/javascript" src="./index_files/love.js" charset="utf-8"></script>
     <script type="text/javascript" src="./config.js?v=5"></script>
     <style type="text/css">
@@ -123,41 +101,41 @@
 
 <script>
     (function () {
+        var BASE_W = 1100, BASE_H = 680;
+
+        function viewportWidth() {
+            // visualViewport reflects the visible phone viewport even if a browser has
+            // enlarged its layout viewport because of desktop-sized page content.
+            if (window.visualViewport && window.visualViewport.width) {
+                return Math.round(window.visualViewport.width);
+            }
+            return document.documentElement.clientWidth || window.innerWidth;
+        }
+
         function fitStage() {
-            var BASE_W = 1100, BASE_H = 680;
-            var vw = window.innerWidth;
+            var vw = viewportWidth();
+            var scale = Math.min(1, vw / BASE_W);
             var main = document.getElementById('main');
             var wrap = document.getElementById('wrap');
-            var earlyStyle = document.getElementById('early-scale');
-            if (earlyStyle) { earlyStyle.remove(); }
-            if (vw < BASE_W) {
-                var ratio = vw / BASE_W;
-                wrap.style.transform = 'scale(' + ratio + ')';
-                wrap.style.transformOrigin = 'top left';
-                wrap.style.position = 'absolute';
-                wrap.style.left = '0';
-                wrap.style.top = '0';
-                wrap.style.margin = '0';
-                main.style.width = vw + 'px';
-                main.style.height = (BASE_H * ratio) + 'px';
-                main.style.overflow = 'hidden';
-                main.style.position = 'relative';
-                window.stageScale = ratio;
-            } else {
-                wrap.style.transform = 'none';
-                wrap.style.position = 'relative';
-                wrap.style.margin = '0 auto';
-                main.style.width = '100%';
-                main.style.height = BASE_H + 'px';
-                main.style.overflow = 'visible';
-                window.stageScale = 1;
-            }
+
+            // Keep the 1100 x 680 canvas as the drawing coordinate system, but make
+            // its absolutely positioned stage occupy only the visible viewport.
+            // Because the stage is out of normal flow, it cannot make mobile browsers
+            // switch to a desktop-sized layout viewport.
+            main.style.width = vw + 'px';
+            main.style.height = (BASE_H * scale) + 'px';
+            wrap.style.left = Math.max(0, (vw - BASE_W * scale) / 2) + 'px';
+            wrap.style.transform = 'scale(' + scale + ')';
+            window.stageScale = scale;
         }
+
         fitStage();
         window.addEventListener('load', fitStage);
         window.addEventListener('resize', fitStage);
         window.addEventListener('orientationchange', fitStage);
-        setTimeout(fitStage, 300);
+        if (window.visualViewport) {
+            window.visualViewport.addEventListener('resize', fitStage);
+        }
     })();
 </script>
 
