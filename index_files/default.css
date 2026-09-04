@@ -2,7 +2,7 @@ body{margin:0;padding:0;background:#ffe;font-size:14px;font-family:'微软雅黑
 body.pre-click{overflow-y:hidden;height:100vh;position:fixed;width:100%;}
 a {color:#000;font-size:14px;}
 #main{width:100%;position:relative;}
-#wrap{position:relative;margin:0 auto;width:1100px;height:680px;margin-top:10px;transform-origin:top center;}
+#wrap{position:relative;margin:0 auto;width:1100px;height:680px;margin-top:10px;transform-origin:top left;}
 #text{width:400px;height:425px;left:60px;top:80px;position:absolute;}
 #code{display:none;font-size:16px;}
 #clock-box {position:absolute;left:60px;top:550px;font-size:28px;display:none;}
@@ -16,12 +16,17 @@ a {color:#000;font-size:14px;}
 .space{margin-right:150px;}
 
 @media (max-width: 1100px) {
-    #wrap {
-        transform: scale(calc(100vw / 1100));
-        margin-top: 0;
-    }
     #main {
+        width: 100vw;
         height: calc(680px * (100vw / 1100));
         overflow: hidden;
+        position: relative;
+    }
+    #wrap {
+        transform: scale(calc(100vw / 1100));
+        margin: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 }
