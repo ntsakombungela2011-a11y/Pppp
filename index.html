@@ -96,6 +96,40 @@
     <div id="proposal-result"></div>
 </div>
 
+<script>
+    (function () {
+        function fitStage() {
+            var BASE_W = 1100, BASE_H = 680;
+            var vw = window.innerWidth;
+            var main = document.getElementById('main');
+            var wrap = document.getElementById('wrap');
+            if (vw < BASE_W) {
+                var ratio = vw / BASE_W;
+                wrap.style.transform = 'scale(' + ratio + ')';
+                wrap.style.transformOrigin = 'top left';
+                wrap.style.position = 'absolute';
+                wrap.style.left = '0';
+                wrap.style.top = '0';
+                wrap.style.margin = '0';
+                main.style.width = vw + 'px';
+                main.style.height = (BASE_H * ratio) + 'px';
+                main.style.overflow = 'hidden';
+                main.style.position = 'relative';
+            } else {
+                wrap.style.transform = 'none';
+                wrap.style.position = 'relative';
+                wrap.style.margin = '0 auto';
+                main.style.width = '100%';
+                main.style.height = BASE_H + 'px';
+                main.style.overflow = 'visible';
+            }
+        }
+        fitStage();
+        window.addEventListener('resize', fitStage);
+        window.addEventListener('orientationchange', fitStage);
+    })();
+</script>
+
 <style type="text/css">
     #click-hint {
         position: fixed;
