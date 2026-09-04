@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Will You Be My Girlfriend?</title>
 
-    <link type="text/css" rel="stylesheet" href="./index_files/default.css?v=6">
+    <link type="text/css" rel="stylesheet" href="./index_files/default.css?v=7">
     <script type="text/javascript" src="./index_files/jquery.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex-parser.js"></script>
@@ -16,9 +16,9 @@
     <script type="text/javascript" src="./index_files/jscex-builderbase.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex-async.min.js"></script>
     <script type="text/javascript" src="./index_files/jscex-async-powerpack.min.js"></script>
-    <script type="text/javascript" src="./index_files/functions.js?v=6" charset="utf-8"></script>
+    <script type="text/javascript" src="./index_files/functions.js?v=7" charset="utf-8"></script>
     <script type="text/javascript" src="./index_files/love.js" charset="utf-8"></script>
-    <script type="text/javascript" src="./config.js?v=5"></script>
+    <script type="text/javascript" src="./config.js?v=6"></script>
     <style type="text/css">
         <!--
         .STYLE1 {
@@ -112,8 +112,16 @@
             return document.documentElement.clientWidth || window.innerWidth;
         }
 
+        function viewportHeight() {
+            if (window.visualViewport && window.visualViewport.height) {
+                return Math.round(window.visualViewport.height);
+            }
+            return document.documentElement.clientHeight || window.innerHeight;
+        }
+
         function fitStage() {
             var vw = viewportWidth();
+            var vh = viewportHeight();
             var scale = Math.min(1, vw / BASE_W);
             var main = document.getElementById('main');
             var wrap = document.getElementById('wrap');
@@ -123,8 +131,9 @@
             // Because the stage is out of normal flow, it cannot make mobile browsers
             // switch to a desktop-sized layout viewport.
             main.style.width = vw + 'px';
-            main.style.height = (BASE_H * scale) + 'px';
+            main.style.height = vh + 'px';
             wrap.style.left = Math.max(0, (vw - BASE_W * scale) / 2) + 'px';
+            wrap.style.top = Math.max(0, (vh - BASE_H * scale) / 2) + 'px';
             wrap.style.transform = 'scale(' + scale + ')';
             window.stageScale = scale;
         }
